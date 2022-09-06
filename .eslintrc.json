@@ -1,0 +1,50 @@
+{
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "globals": {},
+  "rules": {
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/ban-types": [
+      "error",
+      {
+        "extendDefaults": true,
+        "types": {
+          "{}": false
+        }
+      }
+    ],
+    "import/no-restricted-paths": [
+      "error",
+      {
+        "zones": [
+          {
+            "target": "./src/services",
+            "from": "./src/components"
+          },
+          {
+            "target": "./src/services",
+            "from": "./src/lib"
+          },
+          {
+            "target": "./src/services",
+            "from": "./src/pages"
+          },
+          {
+            "target": "./src/lib",
+            "from": "./src/pages"
+          },
+          {
+            "target": "./src/components",
+            "from": "./src/pages"
+          }
+        ]
+      }
+    ]
+  }  
+}
