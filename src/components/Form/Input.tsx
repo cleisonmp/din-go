@@ -6,11 +6,21 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 
+import { useFormContext } from 'react-hook-form'
+
 interface InputProps extends ChakraInputProps {
   name: string
   label?: string
+  //formRegister: UseFormRegister<FieldValues>
 }
-export function Input({ name, label, focusBorderColor, ...rest }: InputProps) {
+
+export const Input = ({
+  name,
+  label,
+  focusBorderColor,
+  ...rest
+}: InputProps) => {
+  const { register } = useFormContext()
   const defaultFocusBorderColor = useColorModeValue(
     'primaryBlue',
     'primaryTextGray',
@@ -21,11 +31,11 @@ export function Input({ name, label, focusBorderColor, ...rest }: InputProps) {
     <FormControl>
       {hasLabel && <FormLabel htmlFor={name}>{label}</FormLabel>}
       <ChakraInput
-        name={name}
         id={name}
         variant={'filled'}
         size={'lg'}
         focusBorderColor={focusBorderColor || defaultFocusBorderColor}
+        {...register(name)}
         {...rest}
       />
     </FormControl>

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useFormContext } from 'react-hook-form'
 
 import {
   FormControl,
@@ -10,7 +11,14 @@ import {
 } from '@chakra-ui/react'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons'
 
+/*interface InputPasswordProps {
+  formRegister: (
+    name: string,
+    options?: RegisterOptions,
+  ) => UseFormRegisterReturn
+}*/
 export function InputPassword() {
+  const { register } = useFormContext()
   const [showingPassword, setShowingPassword] = useState(false)
   const handleClickShowingPassword = () => setShowingPassword((state) => !state)
   const formFocusBorderColor = useColorModeValue(
@@ -20,14 +28,15 @@ export function InputPassword() {
 
   return (
     <FormControl>
-      <FormLabel htmlFor="password">Password</FormLabel>
+      <FormLabel htmlFor='password'>Password</FormLabel>
       <InputGroup>
         <Input
-          id="password"
+          id='password'
           type={showingPassword ? 'text' : 'password'}
           variant={'filled'}
           size={'lg'}
           focusBorderColor={formFocusBorderColor}
+          {...register('password')}
         />
 
         <InputRightElement height={'full'}>
