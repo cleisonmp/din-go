@@ -1,4 +1,5 @@
 import { Avatar, Box, Flex, Icon, Text } from '@chakra-ui/react'
+import { useRouter } from 'next/router'
 import { RiSettings5Line, RiShutDownLine } from 'react-icons/ri'
 import { useUserInfo } from '../../lib/hooks/useUserInfo'
 
@@ -9,6 +10,11 @@ import { useUserInfo } from '../../lib/hooks/useUserInfo'
 }*/
 export const SidebarUser = () => {
   const { name, role, avatarUrl } = useUserInfo()
+  const route = useRouter()
+
+  const handleLogout = () => {
+    route.push('/')
+  }
 
   return (
     <Flex
@@ -33,7 +39,12 @@ export const SidebarUser = () => {
       </Box>
       <Flex gap='4'>
         <Icon as={RiSettings5Line} />
-        <Icon as={RiShutDownLine} />
+        <Icon
+          as={RiShutDownLine}
+          cursor='pointer'
+          aria-label='Logout'
+          onClick={handleLogout}
+        />
       </Flex>
     </Flex>
   )
