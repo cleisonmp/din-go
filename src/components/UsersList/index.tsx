@@ -14,7 +14,7 @@ import { User } from '../../components/UsersList/User'
 export const UserList = () => {
   const isWideResolution = useBreakpointValue({
     base: false,
-    lg: true,
+    md: true,
   })
 
   return (

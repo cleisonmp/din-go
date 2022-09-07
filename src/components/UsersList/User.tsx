@@ -16,7 +16,7 @@ import { RiPencilLine } from 'react-icons/ri'
 export const User = () => {
   const isWideResolution = useBreakpointValue({
     base: false,
-    lg: true,
+    md: true,
   })
   const formattedDate = new Date().toLocaleDateString('en-US', {
     year: '2-digit',

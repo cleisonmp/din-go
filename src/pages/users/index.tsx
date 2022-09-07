@@ -29,6 +29,7 @@ const Users: NextPage = () => {
         borderRadius='2xl'
         p={{ base: '6', lg: '8' }}
         bg={userListBgColor}
+        overflow={{ base: 'scroll', md: 'unset' }}
       >
         <Flex justifyContent='space-between' w='100%'>
           <Heading size='lg' fontWeight='normal'>
