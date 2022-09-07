@@ -5,7 +5,7 @@ import shallow from 'zustand/shallow'
 
 import { Flex, Icon, IconButton, useBreakpointValue } from '@chakra-ui/react'
 import { RiMenuLine } from 'react-icons/ri'
-import { InputSearch } from '../Form/InputSearch'
+import { SearchBox } from './SearchBox'
 import { IconBar } from './IconBar'
 import { UserInfo } from './UserInfo'
 
@@ -53,7 +53,7 @@ export const Header = () => {
           lineHeight='none'
         ></IconButton>
       )}
-      {showSearchBar && <InputSearch flex='1' maxWidth={'25rem'} />}
+      {showSearchBar && <SearchBox flex='1' maxWidth={'25rem'} />}
 
       <Flex gap={{ base: '3', lg: '8' }} align='center'>
         <IconBar />

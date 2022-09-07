@@ -1,34 +1,42 @@
-//import router from 'next/router'
+import router from 'next/router'
+import { useForm, FormProvider } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 
 import { Button, Checkbox, Flex, useColorModeValue } from '@chakra-ui/react'
-import { useForm, FormProvider } from 'react-hook-form'
-
-import { Input } from './Input'
-import { InputPassword } from './InputPassword'
-import { useLoggedInUserData } from '../contexts/LoggedInUserData'
+import { Input } from '../Input'
+import { InputPassword } from '../InputPassword'
+import { useLoggedInUserData } from '../../contexts/LoggedInUserData'
 
 type SignInFormData = {
   email: string
   password: string
 }
+const signInFormSchema = yup.object().shape({
+  email: yup
+    .string()
+    .required('E-mail is required')
+    .email('Invalid e-mail format'),
+  password: yup.string().required('Password is required'),
+})
 
 export function SignInForm() {
   const { setUser } = useLoggedInUserData()
-  const formContextData = useForm<SignInFormData>()
+  const formContextData = useForm<SignInFormData>({
+    resolver: yupResolver(signInFormSchema),
+  })
   const formBgColor = useColorModeValue('gray.50', 'gray.600')
 
   const handleSignIn = async (formData: SignInFormData) => {
     await new Promise((resolve) => setTimeout(resolve, 1500)) //remove later loading effect
-    console.log(formData)
-    //console.log(formContextData.formState.errors)
 
     setUser({
       name: 'User Name',
-      email: 'user@example.com',
+      email: formData.email,
       role: 'Admin',
       avatarUrl: 'https://i.pravatar.cc/150',
     })
-    //router.push(`/dashboard/`)
+    router.push(`/dashboard/`)
   }
 
   return (

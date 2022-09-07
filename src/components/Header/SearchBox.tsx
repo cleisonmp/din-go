@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react'
 import { Search2Icon } from '@chakra-ui/icons'
 
-export const InputSearch = ({ ...rest }: InputProps) => {
+export const SearchBox = ({ ...rest }: InputProps) => {
   const formFocusBorderColor = useColorModeValue(
     'primaryBlue',
     'primaryTextGray',
