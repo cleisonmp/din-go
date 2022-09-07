@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ChakraProvider theme={theme}>
         {renderSidebar ? (
           <>
-            <Flex w='100%' mx='auto' px='8' mt='5' gap='16'>
+            <Flex w='100%' minW='20rem' mx='auto' px='8' mt='5' gap='16'>
               <Sidebar />
               <Flex w='100%' flexDirection='column' gap='6'>
                 <Header />
@@ -33,17 +33,3 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 export default MyApp
-/*
-
-<Box bg="green">
-            <Header />
-
-            <Box w="100%" mx="auto" my="6" px="6" >
-              <Sidebar />
-
-              <Component {...pageProps} />
-            </Box>
-          </Box>
-
-
-          */
