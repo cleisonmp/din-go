@@ -6,6 +6,11 @@ import { ChakraProvider, Flex } from '@chakra-ui/react'
 import { theme } from '../styles/theme'
 import { Sidebar } from '../components/Sidebar'
 import { Header } from '../components/Header'
+import { makeServer } from '../services/mirage'
+
+if (process.env.NODE_ENV === 'development') {
+  makeServer()
+}
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()
