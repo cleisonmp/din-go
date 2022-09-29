@@ -13,34 +13,40 @@ import {
 
 import { RiPencilLine } from 'react-icons/ri'
 
-export const User = () => {
+import { User as UserType } from '../../lib/models/user'
+
+type UserProps = Omit<UserType, 'password' | 'role'>
+
+export const User = ({ id, name, email, createdAt }: UserProps) => {
   const isWideResolution = useBreakpointValue({
     base: false,
     md: true,
   })
-  const formattedDate = new Date().toLocaleDateString('en-US', {
-    year: '2-digit',
-    month: 'short',
-    day: 'numeric',
-  })
+
+  const handleSelect = () => {
+    //add do selected list
+  }
+  const handleEdit = (id: number) => {
+    console.log('edit user:' + id)
+  }
 
   return (
     <Tr>
       <Td px={{ base: '3', lg: '8' }}>
-        <Checkbox colorScheme='buttonColorScheme' />
+        <Checkbox colorScheme='buttonColorScheme' onChange={handleSelect} />
       </Td>
       <Td>
         <Box>
-          <Text fontWeight='bold'>User Name</Text>
+          <Text fontWeight='bold'>{name}</Text>
           <Text color='primaryTextGray' fontSize={'sm'}>
-            user.mail@mail.com
+            {email}
           </Text>
         </Box>
       </Td>
       <Td>
         <Text fontWeight='bold'>Active</Text>
       </Td>
-      {isWideResolution && <Td>{formattedDate}</Td>}
+      {isWideResolution && <Td>{createdAt}</Td>}
       <Td>
         <NextLink href='#'>
           <Button
@@ -48,6 +54,9 @@ export const User = () => {
             padding='2'
             color='primaryText'
             colorScheme={'buttonSecondaryColorScheme'}
+            onClick={() => {
+              handleEdit(id)
+            }}
           >
             <Icon as={RiPencilLine} fontSize={{ base: '16', lg: '20' }} />
           </Button>

@@ -13,16 +13,9 @@ import {
 
 import { RiAddLine } from 'react-icons/ri'
 import { UserList } from '../../components/UsersList'
-import { useEffect } from 'react'
 
 const Users: NextPage = () => {
   const userListBgColor = useColorModeValue('gray.50', 'gray.600')
-
-  useEffect(() => {
-    fetch('http://localhost:3000/api/users/')
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-  }, [])
 
   return (
     <>

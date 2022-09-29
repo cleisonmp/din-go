@@ -1,3 +1,4 @@
+import { useQuery } from 'react-query'
 import {
   Checkbox,
   Table,
@@ -6,12 +7,37 @@ import {
   Tr,
   Tbody,
   useBreakpointValue,
+  Flex,
+  Spinner,
+  Text,
 } from '@chakra-ui/react'
 
 import { Pagination } from '../../components/Pagination'
 import { User } from '../../components/UsersList/User'
 
+import { api } from '../../lib/services/api'
+import { User as UserType } from '../../lib/models/user'
+
 export const UserList = () => {
+  const { data, isLoading, error } = useQuery('users', async () => {
+    const { data } = await api.get<{ users: UserType[] }>('api/users/')
+    const users = data.users.map((user) => {
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        createdAt: new Date(user.createdAt).toLocaleDateString('en-US', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+        }),
+      }
+    })
+
+    return users
+  })
+
   const isWideResolution = useBreakpointValue({
     base: false,
     md: true,
@@ -19,32 +45,51 @@ export const UserList = () => {
 
   return (
     <>
-      <Table mt='8' variant='simple' colorScheme='tableColorScheme'>
-        <Thead>
-          <Tr>
-            <Th px={{ base: '3', lg: '8' }} color='gray.300' width='8'>
-              <Checkbox colorScheme='buttonColorScheme' />
-            </Th>
-            <Th>User</Th>
-            <Th>Status</Th>
-            {isWideResolution && <Th>Created at</Th>}
-            <Th width={8}></Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-          <User />
-        </Tbody>
-      </Table>
-      <Pagination />
+      {isLoading ? (
+        <Flex
+          justify='center'
+          align='center'
+          marginTop='-2.3rem'
+          height='full'
+          width='100%'
+        >
+          <Spinner />
+        </Flex>
+      ) : error ? (
+        <Flex justify='center'>
+          <Text>{`Failed to request data from server: ${error}`}</Text>
+        </Flex>
+      ) : (
+        <>
+          <Table mt='8' variant='simple' colorScheme='tableColorScheme'>
+            <Thead>
+              <Tr>
+                <Th px={{ base: '3', lg: '8' }} color='gray.300' width='8'>
+                  <Checkbox colorScheme='buttonColorScheme' />
+                </Th>
+                <Th>User</Th>
+                <Th>Status</Th>
+                {isWideResolution && <Th>Created at</Th>}
+                <Th width={8}></Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {data?.map((user) => {
+                return (
+                  <User
+                    key={user.name + user.createdAt}
+                    id={user.id}
+                    name={user.name}
+                    email={user.email}
+                    createdAt={user.createdAt}
+                  />
+                )
+              })}
+            </Tbody>
+          </Table>
+          <Pagination />
+        </>
+      )}
     </>
   )
 }
