@@ -18,25 +18,36 @@ import { User } from '../../components/UsersList/User'
 import { api } from '../../lib/services/api'
 import { User as UserType } from '../../lib/models/user'
 
-export const UserList = () => {
-  const { data, isLoading, error } = useQuery('users', async () => {
-    const { data } = await api.get<{ users: UserType[] }>('api/users/')
-    const users = data.users.map((user) => {
-      return {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        createdAt: new Date(user.createdAt).toLocaleDateString('en-US', {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric',
-        }),
-      }
-    })
+interface UserListProps {
+  setFetching: (newState: boolean) => void
+}
 
-    return users
-  })
+export const UserList = ({ setFetching }: UserListProps) => {
+  const { data, isLoading, isFetching, error } = useQuery(
+    'users',
+    async () => {
+      const { data } = await api.get<{ users: UserType[] }>('api/users/')
+      const users = data.users.map((user) => {
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          createdAt: new Date(user.createdAt).toLocaleDateString('en-US', {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+          }),
+        }
+      })
+
+      return users
+    },
+    {
+      staleTime: 1000 * 60 * 60, //1 hour
+    },
+  )
+  setFetching(!isLoading && isFetching)
 
   const isWideResolution = useBreakpointValue({
     base: false,

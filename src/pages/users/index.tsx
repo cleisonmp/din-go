@@ -8,14 +8,21 @@ import {
   Flex,
   Heading,
   Icon,
+  Spinner,
   useColorModeValue,
 } from '@chakra-ui/react'
 
 import { RiAddLine } from 'react-icons/ri'
 import { UserList } from '../../components/UsersList'
+import { useState } from 'react'
 
 const Users: NextPage = () => {
+  const [isFetching, setIsFetching] = useState(false)
   const userListBgColor = useColorModeValue('gray.50', 'gray.600')
+
+  const changeFetchingState = (newState: boolean) => {
+    setIsFetching(newState)
+  }
 
   return (
     <>
@@ -32,9 +39,12 @@ const Users: NextPage = () => {
         overflow={{ base: 'scroll', md: 'unset' }}
       >
         <Flex justifyContent='space-between' w='100%'>
-          <Heading size='lg' fontWeight='normal'>
-            Users
-          </Heading>
+          <Flex justifyContent='center' align='center' gap='0.75rem'>
+            <Heading size='lg' fontWeight='normal'>
+              Users
+            </Heading>
+            {isFetching && <Spinner size='sm' />}
+          </Flex>
 
           <NextLink href='/users/create'>
             <Button
@@ -50,7 +60,7 @@ const Users: NextPage = () => {
             </Button>
           </NextLink>
         </Flex>
-        <UserList />
+        <UserList setFetching={changeFetchingState} />
       </Box>
     </>
   )
