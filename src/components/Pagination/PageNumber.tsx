@@ -1,23 +1,30 @@
-import NextLink from 'next/link'
+import { useCallback } from 'react'
+import { useCurrentUserListPage } from '../contexts/CurrentUserListPage'
+import shallow from 'zustand/shallow'
+
 import { Button, Link as ChakraLink } from '@chakra-ui/react'
 
 interface PageNumberProps {
-  isCurrentPage: boolean
+  isCurrentPage?: boolean
   pageNumber: number
   href: string
 }
 export const PageNumber = ({
-  isCurrentPage,
+  isCurrentPage = false,
   pageNumber,
-  href,
 }: PageNumberProps) => {
+  const setCurrentPage = useCurrentUserListPage(
+    useCallback((state) => state.setCurrentPage, []),
+    shallow,
+  )
+
   if (isCurrentPage) {
     return (
       <Button
-        size="sm"
-        fontSize="xs"
-        width="4"
-        colorScheme="gray"
+        size='sm'
+        fontSize='md'
+        width='4'
+        colorScheme='gray'
         disabled
         _disabled={{ cursor: 'default' }}
       >
@@ -26,10 +33,14 @@ export const PageNumber = ({
     )
   }
   return (
-    <NextLink href={href} passHref>
-      <ChakraLink display="flex" alignItems="center" color="primaryTextGray">
-        {pageNumber}
-      </ChakraLink>
-    </NextLink>
+    <ChakraLink
+      as={'span'}
+      display='flex'
+      alignItems='center'
+      color='primaryTextGray'
+      onClick={() => setCurrentPage(pageNumber)}
+    >
+      {pageNumber}
+    </ChakraLink>
   )
 }

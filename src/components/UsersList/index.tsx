@@ -1,4 +1,5 @@
 import { useUsersList } from '../../lib/hooks/useUsersList'
+import { useCurrentUserListPage } from '../contexts/CurrentUserListPage'
 
 import {
   Checkbox,
@@ -21,7 +22,9 @@ interface UserListProps {
 }
 
 export const UserList = ({ setFetching }: UserListProps) => {
-  const { data, isLoading, isFetching, error } = useUsersList()
+  const currentPage = useCurrentUserListPage((state) => state.currentPage)
+  const { data, isLoading, isFetching, error } = useUsersList(currentPage)
+
   setFetching(!isLoading && isFetching)
 
   const isWideResolution = useBreakpointValue({
@@ -60,7 +63,7 @@ export const UserList = ({ setFetching }: UserListProps) => {
               </Tr>
             </Thead>
             <Tbody>
-              {data?.map((user) => {
+              {data?.users.map((user) => {
                 return (
                   <User
                     key={user.name + user.createdAt}
@@ -73,7 +76,7 @@ export const UserList = ({ setFetching }: UserListProps) => {
               })}
             </Tbody>
           </Table>
-          <Pagination />
+          <Pagination totalCountOfRegisters={data?.totalCount ?? 0} />
         </>
       )}
     </>
