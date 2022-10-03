@@ -3,7 +3,7 @@ import { useCurrentUserListPage } from '../contexts/CurrentUserListPage'
 import shallow from 'zustand/shallow'
 
 import { Button, Link as ChakraLink } from '@chakra-ui/react'
-import { prefetchData } from '../../lib/utils/prefetchData'
+import { usePrefetchData } from '../../lib/hooks/usePrefetchData'
 import { getUsers } from '../../lib/hooks/useUsersList'
 
 interface PageNumberProps {
@@ -18,6 +18,12 @@ export const PageNumber = ({
   const setCurrentPage = useCurrentUserListPage(
     useCallback((state) => state.setCurrentPage, []),
     shallow,
+  )
+
+  const prefetchData = usePrefetchData(
+    `users${pageNumber}`,
+    () => getUsers(pageNumber),
+    1000 * 60 * 60,
   )
 
   if (isCurrentPage) {
@@ -35,13 +41,8 @@ export const PageNumber = ({
     )
   }
 
-  //TODO move outside
-  const handlePrefetch = (pageNumber: number) => {
-    prefetchData(
-      `users${pageNumber}`,
-      () => getUsers(pageNumber),
-      1000 * 60 * 60,
-    )
+  const handlePrefetch = () => {
+    prefetchData()
   }
 
   return (
@@ -50,7 +51,7 @@ export const PageNumber = ({
       display='flex'
       alignItems='center'
       color='primaryTextGray'
-      onMouseOver={() => handlePrefetch(pageNumber)}
+      onMouseOver={handlePrefetch}
       onClick={() => setCurrentPage(pageNumber)}
     >
       {pageNumber}

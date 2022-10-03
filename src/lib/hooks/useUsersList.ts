@@ -4,17 +4,24 @@ import { User } from '../../lib/models/user'
 
 type UserType = Omit<User, 'password'>
 
+interface UserTypeFromDB extends UserType {
+  created_at: string
+}
+
 type GetUsersResponse = {
   users: UserType[]
   totalCount: number
 }
 
 export const getUsers = async (page: number): Promise<GetUsersResponse> => {
-  const { data, headers } = await api.get<{ users: UserType[] }>('users', {
-    params: {
-      page,
+  const { data, headers } = await api.get<{ users: UserTypeFromDB[] }>(
+    'users',
+    {
+      params: {
+        page,
+      },
     },
-  })
+  )
 
   const totalCount = Number(headers['x-total-count'])
 
@@ -24,7 +31,7 @@ export const getUsers = async (page: number): Promise<GetUsersResponse> => {
       name: user.name,
       email: user.email,
       role: user.role,
-      createdAt: new Date(user.createdAt).toLocaleDateString('en-US', {
+      createdAt: new Date(user.created_at).toLocaleDateString('en-US', {
         day: '2-digit',
         month: 'short',
         year: 'numeric',
@@ -36,7 +43,7 @@ export const getUsers = async (page: number): Promise<GetUsersResponse> => {
 }
 
 export const useUsersList = (page: number) => {
-  return useQuery(`users${page}`, () => getUsers(page), {
+  return useQuery([`users`, page], () => getUsers(page), {
     staleTime: 1000 * 60 * 60, //1 hour
   })
 }

@@ -7,6 +7,9 @@ import * as yup from 'yup'
 import { Button, Flex, SimpleGrid } from '@chakra-ui/react'
 import { Input } from '../Input'
 import { InputPassword } from '../InputPassword'
+import { api } from '../../../lib/services/api'
+import { useMutation, useQueryClient } from 'react-query'
+//import { queryClient } from '../../../lib/services/queryClient'
 
 const createUserFormSchema = yup.object().shape({
   name: yup.string().required('Name is required').trim(),
@@ -19,15 +22,30 @@ const createUserFormSchema = yup.object().shape({
 })
 export type CreateUserFormData = yup.InferType<typeof createUserFormSchema>
 
+const userMutation = async (user: CreateUserFormData) => {
+  const response = await api.post('users', {
+    user: { ...user, createdAt: new Date() },
+  })
+
+  return response.data.user
+}
+
 export const NewUserForm = () => {
   const formContextData = useForm<CreateUserFormData>({
     resolver: yupResolver(createUserFormSchema),
   })
+  const queryClient = useQueryClient()
+  const createUser = useMutation(userMutation, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['users'])
+    },
+  })
 
   const handleCreateUser = async (formData: CreateUserFormData) => {
-    await new Promise((resolve) => setTimeout(resolve, 1500)) //remove later loading effect
+    await new Promise((resolve) => setTimeout(resolve, 1500)) //TODO remove later loading effect
     console.log(formData)
 
+    createUser.mutateAsync(formData)
     formContextData.reset()
     router.push(`/users/`)
   }
