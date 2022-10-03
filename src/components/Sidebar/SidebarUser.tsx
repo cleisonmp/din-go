@@ -1,7 +1,7 @@
 import { Avatar, Box, Flex, Icon, Text } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { RiSettings5Line, RiShutDownLine } from 'react-icons/ri'
-import { useUserInfo } from '../../lib/hooks/useUserInfo'
+import { useLoggedUserInfo } from '../../lib/hooks/useLoggedUserInfo'
 
 /*interface SidebarUserProps {
   userName: string
@@ -9,7 +9,7 @@ import { useUserInfo } from '../../lib/hooks/useUserInfo'
   userAvatar: string
 }*/
 export const SidebarUser = () => {
-  const { name, role, avatarUrl } = useUserInfo()
+  const { name, role, avatarUrl } = useLoggedUserInfo()
   const route = useRouter()
 
   const handleLogout = () => {

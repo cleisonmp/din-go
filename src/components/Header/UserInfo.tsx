@@ -1,6 +1,6 @@
 import { Avatar, Box, Flex, Text } from '@chakra-ui/react'
 import { memo } from 'react'
-import { useUserInfo } from '../../lib/hooks/useUserInfo'
+import { useLoggedUserInfo } from '../../lib/hooks/useLoggedUserInfo'
 
 interface UserInfoProps {
   showUserData?: boolean
@@ -8,7 +8,7 @@ interface UserInfoProps {
 export const UserInfo = memo(function UserInfo({
   showUserData = true,
 }: UserInfoProps) {
-  const { name, email, avatarUrl } = useUserInfo()
+  const { name, email, avatarUrl } = useLoggedUserInfo()
 
   return (
     <Flex gap='4' align='center'>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLoggedInUserData } from '../../components/contexts/LoggedInUserData'
 
-export const useUserInfo = () => {
+export const useLoggedUserInfo = () => {
   const { name, email, role, avatarUrl } = useLoggedInUserData()
   const [userTemporaryData, setUserTemporaryData] = useState({
     name: '',
