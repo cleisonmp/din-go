@@ -8,15 +8,14 @@ import { Sidebar } from '../components/Sidebar'
 import { Header } from '../components/Header'
 
 import { makeServer } from '../lib/services/mirage'
-import { QueryClient, QueryClientProvider } from 'react-query'
+import { QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
+import { queryClient } from '../lib/services/queryClient'
 
 //mirage mock data
 //if (process.env.NODE_ENV === 'development') {
 makeServer()
 //}
-
-const queryClient = new QueryClient()
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()

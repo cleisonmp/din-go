@@ -9,7 +9,7 @@ type GetUsersResponse = {
   totalCount: number
 }
 
-const getUsers = async (page: number): Promise<GetUsersResponse> => {
+export const getUsers = async (page: number): Promise<GetUsersResponse> => {
   const { data, headers } = await api.get<{ users: UserType[] }>('users', {
     params: {
       page,
