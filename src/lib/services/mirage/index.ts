@@ -40,6 +40,7 @@ export const makeServer = () => {
     },
 
     routes() {
+      this.passthrough('api/auth/**')
       this.namespace = 'api'
       this.timing = 750
       this.get('/users', function (schema, request) {
