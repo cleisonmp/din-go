@@ -29,7 +29,6 @@ const Login = async (
   console.log('email', email)
 
   console.log('encryptedPass', encryptedPass)
-  return response.json(email)
 
   const {
     data: { name, role },

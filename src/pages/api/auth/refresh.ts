@@ -1,6 +1,6 @@
 import type { NextApiResponse } from 'next'
 
-import { withErrorHandler } from '@cleisonmp/next-api-route-middleware'
+import { use } from 'next-api-route-middleware'
 
 import { addUserInfo, allowMethods, errorHandler } from '../_lib/middleware'
 import {
@@ -49,14 +49,9 @@ const Refresh = async (
     role,
   })
 }
-export default withErrorHandler({
-  errorHandler: errorHandler,
-  middlewares: [allowMethods(['POST']), addUserInfo(getTokenEmail), Refresh],
-})
-/*export default use(
+export default use(
   errorHandler,
   allowMethods(['POST']),
   addUserInfo(getTokenEmail),
   Refresh,
 )
-*/

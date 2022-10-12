@@ -17,6 +17,8 @@ const getUserByEmailAndPassword = async (
       ),
     )
   } catch (error) {
+    console.log('getUserByEmailAndPassword=>', error)
+
     throw new ApiAuthError('Invalid credentials.', 401, 'credentials.invalid')
   }
 }

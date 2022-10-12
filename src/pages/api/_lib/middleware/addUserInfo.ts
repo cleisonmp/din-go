@@ -1,4 +1,4 @@
-import { Middleware } from '@cleisonmp/next-api-route-middleware'
+import { Middleware } from 'next-api-route-middleware'
 import { NextApiRequestWithUser } from '../../../../lib/models/api'
 import { ApiAuthError } from '../../../../lib/models/api/error'
 import { TokenContent } from '../../../../lib/services/authentication/jwt'

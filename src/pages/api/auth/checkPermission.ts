@@ -1,6 +1,6 @@
 import type { NextApiResponse } from 'next'
 
-import { withErrorHandler } from '@cleisonmp/next-api-route-middleware'
+import { use } from 'next-api-route-middleware'
 
 import { addUserInfo, allowMethods, errorHandler } from '../_lib/middleware'
 import { NextApiRequestWithUser } from '../../../lib/models/api'
@@ -19,12 +19,9 @@ const CheckPermission = async (
     role,
   })
 }
-
-export default withErrorHandler({
+export default use(
   errorHandler,
-  middlewares: [
-    allowMethods(['GET']),
-    addUserInfo(verifyToken),
-    CheckPermission,
-  ],
-})
+  allowMethods(['POST']),
+  addUserInfo(verifyToken),
+  CheckPermission,
+)

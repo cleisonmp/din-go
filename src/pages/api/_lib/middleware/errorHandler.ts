@@ -1,16 +1,29 @@
-import { NextApiResponse } from 'next'
+import { Middleware } from 'next-api-route-middleware'
 import { ApiAuthError } from '../../../../lib/models/api/error'
 
-export const errorHandler = async (
-  response: NextApiResponse,
-  error: unknown,
-) => {
-  if (error instanceof ApiAuthError) {
-    response.status(error.statusCode).json({
-      errorCode: error.errorCode,
-      errorMessage: error.message,
-    })
-  } else {
-    response.status(500).send({ message: 'Server unknown error!' })
+export const errorHandler: Middleware = async (req, response, next) => {
+  console.log('error instanceof ApiAuthError')
+  try {
+    await next()
+  } catch (error) {
+    console.error(error)
+    console.log('catch (error)=>', error)
+    if (error instanceof ApiAuthError) {
+      console.log('error instanceof ApiAuthError')
+
+      response.status(error.statusCode).json({
+        errorCode: error.errorCode,
+        message: error.message,
+        stack: error.stack,
+        cause: error.cause,
+        name: error.name,
+        statusCode: error.statusCode,
+        //originalError: error.originalError,
+      })
+      response.end()
+    } else {
+      console.log('unknown error!', error)
+      response.status(500).send({ message: 'Server unknown error!' })
+    }
   }
 }

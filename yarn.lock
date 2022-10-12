@@ -801,11 +801,6 @@
   resolved "https://registry.yarnpkg.com/@chakra-ui/visually-hidden/-/visually-hidden-2.0.9.tgz#b43a3dd0bc1108954ad0eeb50d0261887ab5e31c"
   integrity sha512-PkNxrRGp9H3bdqEaoo8XGt/AL9UuGRTom0/9XJa+G/Dj8Cy1sDuamOWk3pN/ZQs46RokfK9Uh5LqPY5dwSDweg==
 
-"@cleisonmp/next-api-route-middleware@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@cleisonmp/next-api-route-middleware/-/next-api-route-middleware-1.1.0.tgz#87fcbf414e0f6442e4c77583d4dcdb245cfdab0b"
-  integrity sha512-S+pbjX0zA3Rgq6ImJZtbCA4ZWeYY81yHQ2spNIHHAgScEU13I5X+2aOcFdTo3WIozYFyU0qP+FgktJ/FsyeW5w==
-
 "@commitlint/cli@^17.1.2":
   version "17.1.2"
   resolved "https://registry.yarnpkg.com/@commitlint/cli/-/cli-17.1.2.tgz#38240f84936df5216f749f06f838dc50cc85a43d"
@@ -3562,6 +3557,11 @@ natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
+
+next-api-route-middleware@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/next-api-route-middleware/-/next-api-route-middleware-1.0.2.tgz#d7acd393af05e815cb202f10bcb4ce7ca99648fb"
+  integrity sha512-GJBQWHkQ1yOddd30isD0AU3CJ/BX80jJAn/ao6Bkv+pXkWmmMT/xd/1Rx7IcucCjex4Y8pvFInZPi8XJf0lstw==
 
 next@12.2.5:
   version "12.2.5"

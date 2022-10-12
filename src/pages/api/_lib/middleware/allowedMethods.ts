@@ -1,4 +1,4 @@
-import { Middleware } from '@cleisonmp/next-api-route-middleware'
+import { Middleware } from 'next-api-route-middleware'
 import { ApiAuthError } from '../../../../lib/models/api/error'
 
 export const allowMethods = (allowedMethods: string[]): Middleware => {
