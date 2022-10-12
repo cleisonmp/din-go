@@ -6,8 +6,10 @@ export const errorHandler: Middleware = async (req, response, next) => {
   try {
     await next()
   } catch (error) {
+    console.log('================error================')
     console.error(error)
-    console.log('catch (error)=>', error)
+    console.log('================end================')
+
     if (error instanceof ApiAuthError) {
       console.log('error instanceof ApiAuthError')
 

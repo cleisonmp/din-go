@@ -13,9 +13,16 @@ type ErrorCode =
 export class ApiAuthError extends Error {
   public errorCode: ErrorCode
   public statusCode: number
-  constructor(message: string, statusCode: number, errorCode: ErrorCode) {
+  public originalError: unknown
+  constructor(
+    message: string,
+    statusCode: number,
+    errorCode: ErrorCode,
+    originalError?: unknown,
+  ) {
     super(message)
     this.errorCode = errorCode
     this.statusCode = statusCode
+    this.originalError = originalError ?? 'this.originalError'
   }
 }

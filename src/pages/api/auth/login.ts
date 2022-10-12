@@ -29,7 +29,6 @@ const Login = async (
   console.log('email', email)
 
   console.log('encryptedPass', encryptedPass)
-  return response.json(email)
 
   const {
     data: { name, role },
@@ -81,4 +80,4 @@ const Login = async (
   })
 }
 
-export default use(errorHandler, allowMethods(['POST']), errorHandler, Login)
+export default use(errorHandler, allowMethods(['POST']), Login)

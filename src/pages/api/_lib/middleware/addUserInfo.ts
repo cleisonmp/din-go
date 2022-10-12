@@ -31,6 +31,6 @@ export const addUserInfo = (
     } = await getRole(role)
 
     request.user = { email, permissions, role }
-    next()
+    await next()
   }
 }

@@ -3,15 +3,12 @@ import CryptoJS from 'crypto-js'
 import { generateJwtAndRefreshToken } from '../../../lib/services/authentication/jwt'
 import { use } from 'next-api-route-middleware'
 
-import {
-  getRole,
-  getUserByEmailAndPassword,
-} from '../../../lib/services/queries'
+import { getRole, getUserByEmail } from '../../../lib/services/queries'
 import { allowMethods, errorHandler } from '../_lib/middleware'
 import { LoginResponse } from '../../../lib/models/api'
 import { ApiAuthError } from '../../../lib/models/api/error'
 
-const Login = async (
+const loginEmail = async (
   request: NextApiRequest,
   response: NextApiResponse<LoginResponse>,
 ) => {
@@ -32,7 +29,7 @@ const Login = async (
 
   const {
     data: { name, role },
-  } = await getUserByEmailAndPassword(email, encryptedPass)
+  } = await getUserByEmail(email)
 
   console.log('1')
 
@@ -80,4 +77,9 @@ const Login = async (
   })
 }
 
-export default use(errorHandler, allowMethods(['POST']), errorHandler, Login)
+export default use(
+  errorHandler,
+  allowMethods(['POST']),
+  errorHandler,
+  loginEmail,
+)
