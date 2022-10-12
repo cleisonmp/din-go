@@ -5,7 +5,7 @@ import { query } from 'faunadb'
 import { fauna } from '../../../lib/services/fauna'
 
 import { User } from '../../../lib/models/user'
-import { withErrorHandler } from 'next-api-route-middleware'
+import { use } from 'next-api-route-middleware'
 import { allowMethods, errorHandler } from '../_lib/middleware'
 import { ApiAuthError } from '../../../lib/models/api/error'
 
@@ -78,7 +78,4 @@ const CreateUser = async (
     //return responseErrorHandler(response, 400, `Fauna error: ${errorMessage}`)
   }*/
 }
-export default withErrorHandler({
-  errorHandler,
-  middlewares: [allowMethods(['POST']), CreateUser],
-})
+export default use(errorHandler, allowMethods(['POST']), CreateUser)
