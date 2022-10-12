@@ -5,6 +5,7 @@ export interface DecodedToken {
   exp: number
   sub: string
 }
+
 export interface GenerateJwtAndRefreshTokenProps {
   email: string
   payload: { permissions: string[]; role: string }

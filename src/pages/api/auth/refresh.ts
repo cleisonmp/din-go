@@ -1,98 +1,36 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import jwtDecode from 'jwt-decode'
+import type { NextApiResponse } from 'next'
 
-import { responseErrorHandler } from '../_lib/responseErrorHandler'
-import { DecodedToken } from '../../../lib/models/api/api'
-import { getRole, getUserByEmail } from '../../../lib/services/queries'
+import { withErrorHandler } from '@cleisonmp/next-api-route-middleware'
+
+import { addUserInfo, allowMethods, errorHandler } from '../_lib/middleware'
 import {
   checkRefreshTokenIsValid,
   generateJwtAndRefreshToken,
+  getTokenEmail,
 } from '../../../lib/services/authentication/jwt'
+import { NextApiRequestWithUser } from '../../../lib/models/api'
+import { ApiAuthError } from '../../../lib/models/api/error'
 
-const getTokenEmail = (authorizationToken: string) => {
-  const tokenData = jwtDecode(authorizationToken) as DecodedToken
-  console.log(tokenData)
-
-  return tokenData.sub
-}
-
-const Refresh = async (request: NextApiRequest, response: NextApiResponse) => {
-  if (request.method !== 'POST') {
-    response.setHeader('Allow', 'POST')
-    return responseErrorHandler(response, 405, 'Method not allowed.')
-  }
+//TODO Type Refresh response
+const Refresh = async (
+  request: NextApiRequestWithUser,
+  response: NextApiResponse,
+) => {
+  const { email, permissions, role } = request.user
 
   const { refreshToken } = request.body
 
   if (!refreshToken) {
-    return response
-      .status(401)
-      .json({ error: true, message: 'Refresh token is required.' })
+    throw new ApiAuthError(
+      'Refresh token is required.',
+      401,
+      'refreshToken.notFound',
+    )
   }
 
-  const { authorization } = request.headers
-
-  if (!authorization) {
-    return response.status(401).json({
-      error: true,
-      code: 'token.invalid',
-      message: 'Token not present.',
-    })
+  if (!(await checkRefreshTokenIsValid(email, refreshToken))) {
+    throw new ApiAuthError('Refresh token is invalid.', 401, 'token.invalid')
   }
-
-  const authorizationToken = authorization?.split(' ')[1]
-
-  if (!authorizationToken) {
-    return response.status(401).json({
-      error: true,
-      code: 'token.invalid',
-      message: 'Token not present.',
-    })
-  }
-
-  let email: string
-  try {
-    email = getTokenEmail(authorizationToken) ?? ''
-  } catch (error) {
-    return response.status(401).json({
-      error: true,
-      code: 'token.invalid',
-      message: 'Invalid token format.',
-    })
-  }
-  console.log('email', email)
-
-  let role: string
-  try {
-    const userInfo = await getUserByEmail(email)
-    role = userInfo.data.role
-  } catch (error) {
-    return response.status(401).json({
-      error: true,
-      message: 'User not found.',
-    })
-  }
-  console.log('role', role)
-
-  let permissions: string[]
-  try {
-    const userRole = await getRole(role)
-    permissions = userRole.data.permissions
-  } catch (error) {
-    return responseErrorHandler(response, 401, `User role "${role}" not found.`)
-  }
-
-  try {
-    if (!(await checkRefreshTokenIsValid(email, refreshToken))) {
-      throw new Error()
-    }
-  } catch (error) {
-    return response
-      .status(401)
-      .json({ error: true, message: 'Refresh token is invalid.' })
-  }
-
-  //invalidateRefreshToken(email, refreshToken)
 
   const { token, refreshToken: newRefreshToken } =
     await generateJwtAndRefreshToken({
@@ -111,5 +49,14 @@ const Refresh = async (request: NextApiRequest, response: NextApiResponse) => {
     role,
   })
 }
-
-export default Refresh
+export default withErrorHandler({
+  errorHandler: errorHandler,
+  middlewares: [allowMethods(['POST']), addUserInfo(getTokenEmail), Refresh],
+})
+/*export default use(
+  errorHandler,
+  allowMethods(['POST']),
+  addUserInfo(getTokenEmail),
+  Refresh,
+)
+*/

@@ -1,8 +1,49 @@
 import jwt from 'jsonwebtoken'
+import jwtDecode from 'jwt-decode'
 import { v4 as uuid } from 'uuid'
 import { query } from 'faunadb'
 import { fauna } from '../../fauna'
-import { GenerateJwtAndRefreshTokenProps } from '../../../models/api/api'
+import {
+  GenerateJwtAndRefreshTokenProps,
+  DecodedToken,
+} from '../../../models/api'
+import { ApiAuthError } from '../../../models/api/error'
+
+export interface TokenContent {
+  email: string
+  permissions?: string[]
+  role?: string
+}
+
+export const getTokenEmail = (authorizationToken: string): TokenContent => {
+  try {
+    const tokenData = jwtDecode(authorizationToken) as DecodedToken
+    console.log('getTokenEmail', tokenData)
+
+    return { email: tokenData.sub }
+  } catch (error) {
+    throw new ApiAuthError('Invalid token format.', 401, 'token.invalid')
+  }
+}
+
+export const verifyToken = (authorizationToken: string): TokenContent => {
+  try {
+    const tokenData = jwt.verify(
+      authorizationToken as string,
+      process.env.AUTH_SECRET,
+    ) as DecodedToken
+
+    console.log('verifyToken', tokenData)
+
+    return {
+      permissions: tokenData.permissions,
+      role: tokenData.role,
+      email: tokenData.sub,
+    }
+  } catch (error) {
+    throw new ApiAuthError('Token expired.', 401, 'token.expired')
+  }
+}
 
 const getUserRefreshTokens = async (email: string) => {
   try {
@@ -41,17 +82,21 @@ export const checkRefreshTokenIsValid = async (
   email: string,
   refreshToken: string,
 ) => {
-  const isRefreshTokenValid = await fauna.query<boolean>(
-    query.ContainsValue(
-      refreshToken,
-      query.Select(
-        ['data', 'refresh_tokens'],
-        query.Get(query.Match(query.Index('user_by_email'), email)),
+  try {
+    const isRefreshTokenValid = await fauna.query<boolean>(
+      query.ContainsValue(
+        refreshToken,
+        query.Select(
+          ['data', 'refresh_tokens'],
+          query.Get(query.Match(query.Index('user_by_email'), email)),
+        ),
       ),
-    ),
-  )
+    )
 
-  return isRefreshTokenValid
+    return isRefreshTokenValid
+  } catch (error) {
+    throw new ApiAuthError('Refresh token is invalid.', 401, 'token.invalid')
+  }
 }
 
 /*const invalidateRefreshToken = async (email: string, refreshToken: string) => {
@@ -87,7 +132,7 @@ export const generateJwtAndRefreshToken = async ({
 }: GenerateJwtAndRefreshTokenProps) => {
   const token = jwt.sign(payload, process.env.AUTH_SECRET, {
     subject: email,
-    expiresIn: 5, // minutes
+    expiresIn: 60, // seconds
   })
 
   const refreshToken = await createRefreshToken(email, userRefreshToken)

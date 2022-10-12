@@ -25,11 +25,13 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.0.9",
     "@chakra-ui/react": "^2.2.9",
+    "@cleisonmp/next-api-route-middleware": "^1.1.0",
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
     "@hookform/resolvers": "^2.9.7",
     "apexcharts": "^3.35.5",
     "axios": "^0.27.2",
+    "broadcast-channel": "^4.18.0",
     "crypto-js": "^4.1.1",
     "faunadb": "^4.7.0",
     "framer-motion": "^6.5.1",

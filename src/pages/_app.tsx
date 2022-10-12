@@ -10,6 +10,7 @@ import { Header } from '../components/Header'
 //import { makeServer } from '../lib/services/mirage'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
+import { AuthProvider } from '../components/contexts/AuthProvider'
 //import { queryClient } from '../lib/services/queryClient'
 
 //mirage mock data
@@ -26,27 +27,29 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <QueryClientProvider client={queryClient}>
         <ChakraProvider theme={theme}>
-          {renderSidebar ? (
-            <>
-              <Flex
-                w='100%'
-                minW='20rem'
-                minH='90vh'
-                mx='auto'
-                px='8'
-                mt='5'
-                gap='16'
-              >
-                <Sidebar />
-                <Flex w='100%' flexDirection='column' gap='6'>
-                  <Header />
-                  <Component {...pageProps} />
+          <AuthProvider>
+            {renderSidebar ? (
+              <>
+                <Flex
+                  w='100%'
+                  minW='20rem'
+                  minH='90vh'
+                  mx='auto'
+                  px='8'
+                  mt='5'
+                  gap='16'
+                >
+                  <Sidebar />
+                  <Flex w='100%' flexDirection='column' gap='6'>
+                    <Header />
+                    <Component {...pageProps} />
+                  </Flex>
                 </Flex>
-              </Flex>
-            </>
-          ) : (
-            <Component {...pageProps} />
-          )}
+              </>
+            ) : (
+              <Component {...pageProps} />
+            )}
+          </AuthProvider>
         </ChakraProvider>
         <ReactQueryDevtools />
       </QueryClientProvider>

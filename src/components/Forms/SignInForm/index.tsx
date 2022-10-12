@@ -13,9 +13,9 @@ import {
 import { Input } from '../Input'
 import { InputPassword } from '../InputPassword'
 import { useLoggedInUserData } from '../../contexts/LoggedInUserData'
-import { api } from '../../../lib/services/api'
-import { AxiosError } from 'axios'
 import { useState } from 'react'
+import { signIn } from '../../../lib/services/authentication'
+import { ApiAuthError } from '../../../lib/models/api/error'
 
 type SignInFormData = {
   email: string
@@ -39,29 +39,21 @@ export function SignInForm() {
 
   const handleSignIn = async (formData: SignInFormData) => {
     setLoginErrorMessage('')
-    const response = await api
-      .post('auth/login', {
-        email: formData.email,
-        password: formData.password,
-      })
-      .catch((error: AxiosError) => {
-        interface ApiError {
-          error: boolean
-          message: string
-        }
-        const data = error.response?.data as ApiError
-        setLoginErrorMessage(data.message)
-      })
+    await signIn(formData.email, formData.password)
+      .then((response) => {
+        console.log('response====', response)
 
-    if (response) {
-      setUser({
-        name: response.data.name,
-        email: response.data.email,
-        role: response.data.role,
-        avatarUrl: 'https://i.pravatar.cc/150',
+        setUser({
+          name: response.name,
+          email: response.email,
+          role: response.role,
+          avatarUrl: response.avatarUrl,
+        })
+        router.push(`/dashboard/`)
       })
-      router.push(`/dashboard/`)
-    }
+      .catch((error: ApiAuthError) => {
+        setLoginErrorMessage(error.message)
+      })
   }
 
   return (

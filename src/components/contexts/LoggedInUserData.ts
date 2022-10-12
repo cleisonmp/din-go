@@ -9,7 +9,9 @@ interface UserData {
   avatarUrl: string
 }
 interface LoggedInUserDataProps {
+  isAuthenticated: boolean
   setUser: ({ name, role, avatarUrl }: UserData) => void
+  clearUser: () => void
 }
 
 export const useLoggedInUserData = create<LoggedInUserDataProps & UserData>()(
@@ -19,12 +21,22 @@ export const useLoggedInUserData = create<LoggedInUserDataProps & UserData>()(
       email: '',
       role: '',
       avatarUrl: '',
+      isAuthenticated: false,
       setUser: (toNew) =>
         set(() => ({
           name: toNew.name,
           email: toNew.email,
           role: toNew.role,
           avatarUrl: toNew.avatarUrl,
+          isAuthenticated: true,
+        })),
+      clearUser: () =>
+        set(() => ({
+          name: '',
+          email: '',
+          role: '',
+          avatarUrl: '',
+          isAuthenticated: false,
         })),
     }),
     {
