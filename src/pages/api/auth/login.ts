@@ -16,7 +16,6 @@ const Login = async (
   response: NextApiResponse<LoginResponse>,
 ) => {
   const { email, password, userRefreshToken } = request.body
-  console.log('body', request.body)
 
   if (!email || !password) {
     throw new ApiAuthError('Invalid request body.', 400, 'request.invalid')
@@ -24,41 +23,13 @@ const Login = async (
 
   const encryptedPass = CryptoJS.SHA3(password).toString(CryptoJS.enc.Base64)
 
-  console.log('0')
-  console.log('process.env.FAUNADB_KEY', process.env.FAUNADB_KEY)
-  console.log('email', email)
-
-  console.log('encryptedPass', encryptedPass)
-
   const {
     data: { name, role },
   } = await getUserByEmailAndPassword(email, encryptedPass)
 
-  console.log('1')
-
-  /*.then((response) => {
-      console.log('responseresponseresponseresponse', response)
-
-      if (response.status !== 200) {
-        console.log('=======asdasdasdasdasd again')
-
-        throw new ApiAuthError(
-          'Invalid credentials.',
-          401,
-          'credentials.invalid',
-        )
-      }
-    })
-    .catch(() => {
-      console.log('=======error again')
-
-      throw new ApiAuthError('Invalid credentials.', 401, 'credentials.invalid')
-    })*/
-
   const {
     data: { permissions },
   } = await getRole(role)
-  console.log('2')
 
   const { token, refreshToken } = await generateJwtAndRefreshToken({
     email,
@@ -68,7 +39,6 @@ const Login = async (
     },
     userRefreshToken,
   })
-  console.log('3')
 
   return response.json({
     token,

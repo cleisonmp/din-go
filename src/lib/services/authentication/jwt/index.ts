@@ -18,7 +18,6 @@ export interface TokenContent {
 export const getTokenEmail = (authorizationToken: string): TokenContent => {
   try {
     const tokenData = jwtDecode(authorizationToken) as DecodedToken
-    console.log('getTokenEmail', tokenData)
 
     return { email: tokenData.sub }
   } catch (error) {
@@ -32,8 +31,6 @@ export const verifyToken = (authorizationToken: string): TokenContent => {
       authorizationToken as string,
       process.env.AUTH_SECRET,
     ) as DecodedToken
-
-    console.log('verifyToken', tokenData)
 
     return {
       permissions: tokenData.permissions,

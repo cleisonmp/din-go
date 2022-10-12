@@ -9,26 +9,18 @@ import { use } from 'next-api-route-middleware'
 import { allowMethods, errorHandler } from '../_lib/middleware'
 import { ApiAuthError } from '../../../lib/models/api/error'
 
-//TODO type response
 const CreateUser = async (
   request: NextApiRequest,
-  response: NextApiResponse,
+  response: NextApiResponse<string>,
 ) => {
-  /*if (request.method !== 'POST') {
-    response.setHeader('Allow', 'POST')
-    return response.status(405).end('Method not allowed')
-  }*/
-
   const { name, email, password, role } = request.body as Partial<User>
 
   if (!name || !email || !password || !role) {
-    //return responseErrorHandler(response, 400, 'Bad Request.')
     throw new ApiAuthError('Invalid request body.', 400, 'request.invalid')
   }
 
   const encryptedPass = CryptoJS.SHA3(password).toString(CryptoJS.enc.Base64)
 
-  //try {
   const roleRef = await fauna.query(
     query.Select(
       'ref',
@@ -36,7 +28,6 @@ const CreateUser = async (
     ),
   )
   if (!roleRef) {
-    //return responseErrorHandler(response, 400, 'Role not found.')
     throw new ApiAuthError('Role not found.', 400, 'role.notFound')
   }
 
@@ -63,19 +54,7 @@ const CreateUser = async (
       400,
       'user.duplicated',
     )
-    /*return responseErrorHandler(
-        response,
-        400,
-        'User already exists with this email.',
-      )*/
   }
   return response.status(200).send('User successfully created')
-  /*} catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : 'Unknown error'
-
-      throw new ApiAuthError('Role not found.', 400, 'role.notFound')
-    //return responseErrorHandler(response, 400, `Fauna error: ${errorMessage}`)
-  }*/
 }
 export default use(errorHandler, allowMethods(['POST']), CreateUser)

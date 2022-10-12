@@ -42,14 +42,7 @@ export const signIn = async (
       response.status,
       response.data.errorCode,
     )
-    /*return {
-      statusCode: response.status,
-      errorMessage: response.data.errorMessage,
-      errorCode: response.data.errorCode,
-    }*/
   }
-
-  console.log('response.data===', response)
 
   const {
     data: { token, refreshToken, name, role },
@@ -73,6 +66,4 @@ export const signIn = async (
     role,
     avatarUrl: 'https://i.pravatar.cc/150',
   }
-
-  //return { token, refreshToken, name, email, role, permissions }
 }

@@ -1,27 +1,28 @@
-import axios, { AxiosError } from 'axios'
+//import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 //import { parseCookies } from 'nookies'
 
 export const api = axios.create({
   baseURL: '/api/',
 })
 
-api.interceptors.response.use(
+/*api.interceptors.response.use(
   (response) => {
     return response
   },
   (error: AxiosError) => {
-    console.log('interceptors:', error)
-    /*if (error?.response?.status === 401) {
-      if (error.response.data?.code === 'token.expired') {
-        console.log('interceptors:', 'token.expired')
-      }
-    }*/
-    return error.response
+    // console.log('interceptors:', error)
+    // if (error?.response?.status === 401) {
+    //   if (error.response.data?.code === 'token.expired') {
+    //     console.log('interceptors:', 'token.expired')
+    //   }
+    // }
+    // return error.response
   },
 
-  /*return Promise.reject(error)
-  },*/
-)
+  // return Promise.reject(error)
+  // },
+)*/
 
 /*
 if (error?.response?.status === 401) {

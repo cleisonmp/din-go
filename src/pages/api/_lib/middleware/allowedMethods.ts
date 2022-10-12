@@ -7,7 +7,6 @@ export const allowMethods = (allowedMethods: string[]): Middleware => {
       await next()
     } else {
       throw new ApiAuthError('Method not allowed.', 405, 'method.invalid')
-      //throw new Error('Method not allowed.')
     }
   }
 }

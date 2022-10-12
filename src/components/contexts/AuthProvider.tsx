@@ -15,7 +15,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     console.log('token isAuthenticated?', isAuthenticated)
-    if (isAuthenticated) {
+    if (isAuthenticated && Router.asPath === '/') {
       Router.push('/dashboard')
     }
   }, [isAuthenticated])

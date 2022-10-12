@@ -15,7 +15,6 @@ import { InputPassword } from '../InputPassword'
 import { useLoggedInUserData } from '../../contexts/LoggedInUserData'
 import { useState } from 'react'
 import { signIn } from '../../../lib/services/authentication'
-import { ApiAuthError } from '../../../lib/models/api/error'
 
 type SignInFormData = {
   email: string
@@ -41,8 +40,6 @@ export function SignInForm() {
     setLoginErrorMessage('')
     await signIn(formData.email, formData.password)
       .then((response) => {
-        console.log('response====', response)
-
         setUser({
           name: response.name,
           email: response.email,
@@ -51,8 +48,12 @@ export function SignInForm() {
         })
         router.push(`/dashboard/`)
       })
-      .catch((error: ApiAuthError) => {
-        setLoginErrorMessage(error.message)
+      .catch((error) => {
+        console.log('error', error)
+
+        setLoginErrorMessage(
+          error.response.data.message ?? error.message ?? 'Unknown error.',
+        )
       })
   }
 
