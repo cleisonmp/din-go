@@ -1,7 +1,7 @@
 import { query } from 'faunadb'
 import { fauna } from '../fauna'
 import { FaunaUser } from '../../models/api'
-import { ApiAuthError } from '../../models/api/error'
+import { ApiAuthError } from '../../errors/ApiAuthError'
 
 const getUserByEmailAndPassword = async (
   email: string,

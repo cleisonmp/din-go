@@ -2,14 +2,18 @@ import type { NextApiResponse } from 'next'
 
 import { use } from 'next-api-route-middleware'
 
-import { addUserInfo, allowMethods, errorHandler } from '../_lib/middleware'
+import {
+  addUserInfo,
+  allowMethods,
+  errorHandler,
+} from '../../../lib/services/api/middleware'
 import {
   checkRefreshTokenIsValid,
   generateJwtAndRefreshToken,
   getTokenEmail,
 } from '../../../lib/services/authentication/jwt'
 import { NextApiRequestWithUser } from '../../../lib/models/api'
-import { ApiAuthError } from '../../../lib/models/api/error'
+import { ApiAuthError } from '../../../lib/errors/ApiAuthError'
 
 //TODO Type Refresh response
 const Refresh = async (

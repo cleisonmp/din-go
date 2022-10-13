@@ -7,7 +7,7 @@ import {
   GenerateJwtAndRefreshTokenProps,
   DecodedToken,
 } from '../../../models/api'
-import { ApiAuthError } from '../../../models/api/error'
+import { ApiAuthError } from '../../../errors/ApiAuthError'
 
 export interface TokenContent {
   email: string
@@ -32,12 +32,14 @@ export const verifyToken = (authorizationToken: string): TokenContent => {
       process.env.AUTH_SECRET,
     ) as DecodedToken
 
+    console.log('verifying token:', 'token is valid')
     return {
       permissions: tokenData.permissions,
       role: tokenData.role,
       email: tokenData.sub,
     }
   } catch (error) {
+    console.log('verifying token:', 'token is expired')
     throw new ApiAuthError('Token expired.', 401, 'token.expired')
   }
 }
@@ -129,7 +131,7 @@ export const generateJwtAndRefreshToken = async ({
 }: GenerateJwtAndRefreshTokenProps) => {
   const token = jwt.sign(payload, process.env.AUTH_SECRET, {
     subject: email,
-    expiresIn: 60, // seconds
+    expiresIn: 15, // seconds
   })
 
   const refreshToken = await createRefreshToken(email, userRefreshToken)

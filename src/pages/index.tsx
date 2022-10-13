@@ -5,6 +5,7 @@ import { Flex, useBreakpointValue } from '@chakra-ui/react'
 import { SignInForm } from '../components/Forms/SignInForm'
 import { Sidebanner } from '../components/Login/Sidebanner'
 import { Logo } from '../components/Logo'
+import { withSSRGuest } from '../lib/services/authentication/withSSRGuest'
 
 const Home: NextPage = () => {
   const isWideResolution = useBreakpointValue({
@@ -49,3 +50,7 @@ const Home: NextPage = () => {
 }
 
 export default Home
+
+export const getServerSideProps = withSSRGuest(async () => {
+  return { props: {} }
+})

@@ -1,3 +1,8 @@
+export type UserPermissions = {
+  permissions: string[]
+  role: string
+}
+
 export type User = {
   id: number
   name: string

@@ -2,6 +2,8 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { Divider, Flex, Heading, useColorModeValue } from '@chakra-ui/react'
 import { NewUserForm } from '../../components/Forms/NewUserForm'
+import { withSSRAuth } from '../../lib/services/authentication/withSSRAuth'
+import { setupAPIClient } from '../../lib/services/api'
 
 const CreateUser: NextPage = () => {
   const createUserBgColor = useColorModeValue('gray.50', 'gray.600')
@@ -28,3 +30,19 @@ const CreateUser: NextPage = () => {
 }
 
 export default CreateUser
+
+export const getServerSideProps = withSSRAuth(
+  async (ctx) => {
+    const ssrApiClient = setupAPIClient(ctx)
+    //const response =
+    await ssrApiClient.get('/auth/checkPermissions')
+
+    return {
+      props: {},
+    }
+  },
+  {
+    permissions: ['users.create'],
+    roles: ['Admin'],
+  },
+)

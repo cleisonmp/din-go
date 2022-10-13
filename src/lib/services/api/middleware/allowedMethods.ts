@@ -1,5 +1,5 @@
 import { Middleware } from 'next-api-route-middleware'
-import { ApiAuthError } from '../../../../lib/models/api/error'
+import { ApiAuthError } from '../../../errors/ApiAuthError'
 
 export const allowMethods = (allowedMethods: string[]): Middleware => {
   return async (request, _response, next) => {

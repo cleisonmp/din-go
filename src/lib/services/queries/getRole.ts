@@ -1,5 +1,5 @@
 import { query } from 'faunadb'
-import { ApiAuthError } from '../../models/api/error'
+import { ApiAuthError } from '../../errors/ApiAuthError'
 import { FaunaRole } from '../../models/api'
 import { fauna } from '../fauna'
 

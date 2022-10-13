@@ -7,9 +7,12 @@ import {
   getRole,
   getUserByEmailAndPassword,
 } from '../../../lib/services/queries'
-import { allowMethods, errorHandler } from '../_lib/middleware'
+import {
+  allowMethods,
+  errorHandler,
+} from '../../../lib/services/api/middleware'
 import { LoginResponse } from '../../../lib/models/api'
-import { ApiAuthError } from '../../../lib/models/api/error'
+import { ApiAuthError } from '../../../lib/errors/ApiAuthError'
 
 const Login = async (
   request: NextApiRequest,

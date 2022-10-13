@@ -6,8 +6,11 @@ import { fauna } from '../../../lib/services/fauna'
 
 import { User } from '../../../lib/models/user'
 import { use } from 'next-api-route-middleware'
-import { allowMethods, errorHandler } from '../_lib/middleware'
-import { ApiAuthError } from '../../../lib/models/api/error'
+import {
+  allowMethods,
+  errorHandler,
+} from '../../../lib/services/api/middleware'
+import { ApiAuthError } from '../../../lib/errors/ApiAuthError'
 
 const CreateUser = async (
   request: NextApiRequest,

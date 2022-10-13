@@ -1,5 +1,5 @@
-import { useUsersList } from '../../lib/hooks/useUsersList'
-import { useCurrentUserListPage } from '../contexts/CurrentUserListPage'
+//import { useUsersList } from '../../lib/hooks/useUsersList'
+//import { useCurrentUserListPage } from '../contexts/CurrentUserListPage'
 
 import {
   Checkbox,
@@ -15,15 +15,19 @@ import {
 } from '@chakra-ui/react'
 
 import { Pagination } from '../../components/Pagination'
-import { User } from '../../components/UsersList/User'
+//import { User } from '../../components/UsersList/User'
 
 interface UserListProps {
   setFetching: (newState: boolean) => void
 }
 
 export const UserList = ({ setFetching }: UserListProps) => {
-  const currentPage = useCurrentUserListPage((state) => state.currentPage)
-  const { data, isLoading, isFetching, error } = useUsersList(currentPage)
+  // const currentPage = useCurrentUserListPage((state) => state.currentPage)
+  // const { data, isLoading, isFetching, error } = useUsersList(currentPage)
+  //const data = undefined
+  const isLoading = false,
+    isFetching = false
+  const error = undefined
 
   setFetching(!isLoading && isFetching)
 
@@ -63,7 +67,7 @@ export const UserList = ({ setFetching }: UserListProps) => {
               </Tr>
             </Thead>
             <Tbody>
-              {data?.users.map((user) => {
+              {/*data?.users.map((user) => {
                 return (
                   <User
                     key={user.name + user.createdAt}
@@ -73,10 +77,10 @@ export const UserList = ({ setFetching }: UserListProps) => {
                     createdAt={user.createdAt}
                   />
                 )
-              })}
+              })*/}
             </Tbody>
           </Table>
-          <Pagination totalCountOfRegisters={data?.totalCount ?? 0} />
+          <Pagination totalCountOfRegisters={/*data?.totalCount ??*/ 0} />
         </>
       )}
     </>

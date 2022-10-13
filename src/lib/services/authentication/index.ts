@@ -1,17 +1,16 @@
 import Router from 'next/router'
-import { setCookie, destroyCookie } from 'nookies'
 import { BroadcastChannel } from 'broadcast-channel'
 
 import { api } from '../api'
 import { AxiosResponse } from 'axios'
-import { ApiAuthError } from '../../models/api/error'
+import { ApiAuthError } from '../../errors/ApiAuthError'
 import { LoginResponse } from '../../models/api'
+import { deleteAuthCookies, storeAuthCookies } from './authCookies'
 
 export const signOut = () => {
   const authChannel = new BroadcastChannel('authChannel')
 
-  destroyCookie(undefined, 'nextauth.token')
-  destroyCookie(undefined, 'nextauth.refreshToken')
+  deleteAuthCookies()
 
   authChannel.postMessage('signOut')
 
@@ -48,6 +47,8 @@ export const signIn = async (
     data: { token, refreshToken, name, role },
   } = response as AxiosResponse<LoginResponse>
 
+  storeAuthCookies(token, refreshToken)
+  /*
   setCookie(undefined, 'nextauth.token', token, {
     maxAge: 60 * 60 * 24 * 30, // 30 days
     path: '/',
@@ -56,7 +57,7 @@ export const signIn = async (
   setCookie(undefined, 'nextauth.refreshToken', refreshToken, {
     maxAge: 60 * 60 * 24 * 30, // 30 days
     path: '/',
-  })
+  })*/
 
   authChannel.postMessage('signIn')
 

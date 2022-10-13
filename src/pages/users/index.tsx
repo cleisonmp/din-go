@@ -15,6 +15,8 @@ import {
 import { RiAddLine } from 'react-icons/ri'
 import { UserList } from '../../components/UsersList'
 import { useState } from 'react'
+import { withSSRAuth } from '../../lib/services/authentication/withSSRAuth'
+import { setupAPIClient } from '../../lib/services/api'
 
 const Users: NextPage = () => {
   const [isFetching, setIsFetching] = useState(false)
@@ -67,3 +69,20 @@ const Users: NextPage = () => {
 }
 
 export default Users
+
+export const getServerSideProps = withSSRAuth(
+  async (ctx) => {
+    const ssrApiClient = setupAPIClient(ctx)
+    //const response =
+    await ssrApiClient.get('/auth/checkPermissions')
+
+    console.log('going to return without error')
+    return {
+      props: {},
+    }
+  },
+  {
+    permissions: ['users.read'],
+    roles: [],
+  },
+)

@@ -2,7 +2,11 @@ import type { NextApiResponse } from 'next'
 
 import { use } from 'next-api-route-middleware'
 
-import { addUserInfo, allowMethods, errorHandler } from '../_lib/middleware'
+import {
+  addUserInfo,
+  allowMethods,
+  errorHandler,
+} from '../../../lib/services/api/middleware'
 import { NextApiRequestWithUser } from '../../../lib/models/api'
 import { verifyToken } from '../../../lib/services/authentication/jwt'
 
@@ -18,6 +22,8 @@ const CheckPermission = async (
 ) => {
   const { email, permissions, role } = request.user
 
+  console.log('CheckPermission final stage')
+
   return response.json({
     email,
     permissions,
@@ -26,7 +32,7 @@ const CheckPermission = async (
 }
 export default use(
   errorHandler,
-  allowMethods(['POST']),
+  allowMethods(['GET']),
   addUserInfo(verifyToken),
   CheckPermission,
 )

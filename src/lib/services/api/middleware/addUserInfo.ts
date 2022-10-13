@@ -1,8 +1,8 @@
 import { Middleware } from 'next-api-route-middleware'
-import { NextApiRequestWithUser } from '../../../../lib/models/api'
-import { ApiAuthError } from '../../../../lib/models/api/error'
-import { TokenContent } from '../../../../lib/services/authentication/jwt'
-import { getRole, getUserByEmail } from '../../../../lib/services/queries'
+import { NextApiRequestWithUser } from '../../../models/api'
+import { ApiAuthError } from '../../../errors/ApiAuthError'
+import { TokenContent } from '../../authentication/jwt'
+import { getRole, getUserByEmail } from '../../queries'
 
 export const addUserInfo = (
   tokenHandler: (authorizationToken: string) => TokenContent,
