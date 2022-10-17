@@ -76,7 +76,6 @@ export const getServerSideProps = withSSRAuth(
     //const response =
     await ssrApiClient.get('/auth/checkPermissions')
 
-    console.log('going to return without error')
     return {
       props: {},
     }

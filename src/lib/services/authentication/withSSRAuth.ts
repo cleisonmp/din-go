@@ -53,8 +53,6 @@ export function withSSRAuth<ResultType extends GenericObject>(
         userPermissions,
         requiredPermissions: options,
       })
-      console.log('userHasValidPermissions:', userHasValidPermissions)
-      console.log(ctx.req.headers)
 
       if (!userHasValidPermissions) {
         return {

@@ -25,7 +25,6 @@ interface UserListProps {
 export const UserList = ({ setFetching }: UserListProps) => {
   //const currentPage = useCurrentUserListPage((state) => state.currentPage)
   const { data, isLoading, isFetching, error } = useUsersList(1)
-  console.log('data', data)
 
   setFetching(!isLoading && isFetching)
 

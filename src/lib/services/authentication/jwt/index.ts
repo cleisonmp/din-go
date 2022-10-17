@@ -32,7 +32,6 @@ export const verifyToken = (authorizationToken: string): TokenContent => {
       process.env.AUTH_SECRET,
     ) as DecodedToken
 
-    console.log('verifying token:', 'token is valid')
     return {
       permissions: tokenData.permissions,
       role: tokenData.role,

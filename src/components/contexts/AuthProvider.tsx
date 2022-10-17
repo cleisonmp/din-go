@@ -14,7 +14,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const clearUser = useLoggedInUserData((state) => state.clearUser)
 
   useEffect(() => {
-    console.log('token isAuthenticated?', isAuthenticated)
     if (isAuthenticated && Router.asPath === '/') {
       Router.push('/dashboard')
     }

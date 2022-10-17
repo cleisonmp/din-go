@@ -22,8 +22,6 @@ const CheckPermission = async (
 ) => {
   const { email, permissions, role } = request.user
 
-  console.log('CheckPermission final stage')
-
   return response.json({
     email,
     permissions,
