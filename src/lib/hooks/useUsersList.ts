@@ -2,11 +2,7 @@ import { useQuery } from 'react-query'
 import { api } from '../../lib/services/api'
 import { User } from '../../lib/models/user'
 
-type UserType = Omit<User, 'password'>
-
-interface UserTypeFromDB extends UserType {
-  created_at: string
-}
+type UserType = Omit<User, 'password' | 'id'>
 
 type GetUsersResponse = {
   users: UserType[]
@@ -14,32 +10,16 @@ type GetUsersResponse = {
 }
 
 export const getUsers = async (page: number): Promise<GetUsersResponse> => {
-  const { data, headers } = await api.get<{ users: UserTypeFromDB[] }>(
-    'users',
-    {
-      params: {
-        page,
-      },
+  const { data } = await api.get<UserType[]>('users/getusers', {
+    params: {
+      page: page.toString(),
     },
-  )
-
-  const totalCount = Number(headers['x-total-count'])
-
-  const users = data.users.map((user) => {
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      createdAt: new Date(user.created_at).toLocaleDateString('en-US', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-      }),
-    }
   })
+  //const totalCount = Number(headers['x-total-count'])
 
-  return { users, totalCount }
+  const totalCount = 10
+
+  return { users: data, totalCount }
 }
 
 export const useUsersList = (page: number) => {

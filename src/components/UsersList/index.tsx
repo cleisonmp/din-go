@@ -15,19 +15,17 @@ import {
 } from '@chakra-ui/react'
 
 import { Pagination } from '../../components/Pagination'
-//import { User } from '../../components/UsersList/User'
+import { useUsersList } from '../../lib/hooks/useUsersList'
+import { User } from './User'
 
 interface UserListProps {
   setFetching: (newState: boolean) => void
 }
 
 export const UserList = ({ setFetching }: UserListProps) => {
-  // const currentPage = useCurrentUserListPage((state) => state.currentPage)
-  // const { data, isLoading, isFetching, error } = useUsersList(currentPage)
-  //const data = undefined
-  const isLoading = false,
-    isFetching = false
-  const error = undefined
+  //const currentPage = useCurrentUserListPage((state) => state.currentPage)
+  const { data, isLoading, isFetching, error } = useUsersList(1)
+  console.log('data', data)
 
   setFetching(!isLoading && isFetching)
 
@@ -61,23 +59,22 @@ export const UserList = ({ setFetching }: UserListProps) => {
                   <Checkbox colorScheme='buttonColorScheme' />
                 </Th>
                 <Th>User</Th>
-                <Th>Status</Th>
                 {isWideResolution && <Th>Created at</Th>}
                 <Th width={8}></Th>
               </Tr>
             </Thead>
             <Tbody>
-              {/*data?.users.map((user) => {
+              {data?.users.map((user) => {
                 return (
                   <User
                     key={user.name + user.createdAt}
-                    id={user.id}
+                    id={1 /*user.id*/}
                     name={user.name}
                     email={user.email}
                     createdAt={user.createdAt}
                   />
                 )
-              })*/}
+              })}
             </Tbody>
           </Table>
           <Pagination totalCountOfRegisters={/*data?.totalCount ??*/ 0} />
@@ -86,3 +83,4 @@ export const UserList = ({ setFetching }: UserListProps) => {
     </>
   )
 }
+//<Th>Status</Th>

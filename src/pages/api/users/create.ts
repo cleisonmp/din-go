@@ -44,6 +44,7 @@ const CreateUser = async (
           password: encryptedPass,
           role,
           refresh_tokens: [],
+          created_at: new Date().toISOString(),
         },
       }),
       null,

@@ -11,6 +11,8 @@ import { Header } from '../components/Header'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { AuthProvider } from '../components/contexts/AuthProvider'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 //import { queryClient } from '../lib/services/queryClient'
 
 //mirage mock data
@@ -43,6 +45,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                   <Flex w='100%' flexDirection='column' gap='6'>
                     <Header />
                     <Component {...pageProps} />
+                    <ToastContainer />
                   </Flex>
                 </Flex>
               </>

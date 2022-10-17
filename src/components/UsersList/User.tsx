@@ -1,5 +1,3 @@
-import NextLink from 'next/link'
-
 import {
   Box,
   Button,
@@ -43,24 +41,19 @@ export const User = ({ id, name, email, createdAt }: UserProps) => {
           </Text>
         </Box>
       </Td>
-      <Td>
-        <Text fontWeight='bold'>Active</Text>
-      </Td>
       {isWideResolution && <Td>{createdAt}</Td>}
       <Td>
-        <NextLink href='#'>
-          <Button
-            size='sm'
-            padding='2'
-            color='primaryText'
-            colorScheme={'buttonSecondaryColorScheme'}
-            onClick={() => {
-              handleEdit(id)
-            }}
-          >
-            <Icon as={RiPencilLine} fontSize={{ base: '16', lg: '20' }} />
-          </Button>
-        </NextLink>
+        <Button
+          size='sm'
+          padding='2'
+          color='primaryText'
+          colorScheme={'buttonSecondaryColorScheme'}
+          onClick={() => {
+            handleEdit(id)
+          }}
+        >
+          <Icon as={RiPencilLine} fontSize={{ base: '16', lg: '20' }} />
+        </Button>
       </Td>
     </Tr>
   )

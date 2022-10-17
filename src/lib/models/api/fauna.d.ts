@@ -7,6 +7,7 @@ export type FaunaUser = {
     role: string
     password: string
     refresh_token: string | null
+    created_at: string
   }
 }
 export type FaunaRole = {
